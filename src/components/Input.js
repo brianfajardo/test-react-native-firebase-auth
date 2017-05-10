@@ -1,8 +1,8 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import { FormLabel, FormInput } from 'react-native-elements'
 
-export default ({ label, onChangeText, value, secureTextEntry }) =>
+export default Input = ({ label, onChangeText, value, secureTextEntry }) =>
   <View>
     <FormLabel>{label}</FormLabel>
     <FormInput
