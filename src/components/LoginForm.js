@@ -11,34 +11,46 @@ export default class LoginForm extends Component {
   }
 
   render() {
-    const { buttonStyle, iconStyle } = style
+    const { buttonStyle, buttonContainer } = style
 
     return (
-      <View>
-        <Icon
-          name='flame'
-          type='octicon'
-          color='rgb(240,139,85)'
-          size={100}
-          iconStyle={iconStyle}
-        />
-        <FormLabel>Email</FormLabel>
-        <FormInput
-          onChangeText={text => this.setState({ text })}
-          value={this.state.text}
-        />
-        <FormLabel>Password</FormLabel>
-        <FormInput
-          onChangeText={text => console.log(text)}
-          secureTextEntry={true}
-        />
-        <Button
-          icon={{ name: 'link', type: 'octicon' }}
-          title='Submit'
-          style={buttonStyle}
-          backgroundColor='rgb(202,202,202)'
-          borderRadius={20}
-        />
+      <View style={{ flex: 1, justifyContent: 'space-around' }}>
+
+        <View style={buttonContainer}>
+          <Icon
+            name='account-circle'
+            color='orange'
+            size={150}
+          />
+        </View>
+
+        <View>
+          <FormLabel>Email</FormLabel>
+          <FormInput
+            onChangeText={text => this.setState({ text })}
+            value={this.state.text}
+          />
+          <FormLabel>Password</FormLabel>
+          <FormInput
+            onChangeText={text => console.log(text)}
+            secureTextEntry={true}
+          />
+        </View>
+
+        <View style={buttonContainer}>
+          <Button
+            icon={{
+              name: 'flame',
+              type: 'octicon',
+              color: 'orange'
+            }}
+            title='Submit'
+            style={buttonStyle}
+            backgroundColor='grey'
+            borderRadius={20}
+          />
+        </View>
+
       </View>
     )
   }
@@ -46,9 +58,9 @@ export default class LoginForm extends Component {
 
 const style = {
   buttonStyle: {
-    marginTop: 15
+    width: 150
   },
-  iconStyle: {
-    marginTop: 30
+  buttonContainer: {
+    alignItems: 'center'
   }
 }
