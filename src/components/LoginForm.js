@@ -4,36 +4,72 @@ import { FormLabel, FormInput, Button, Icon } from 'react-native-elements'
 import firebase from 'firebase'
 
 import Input from './Input'
+import Spinner from './Spinner'
 
 export default class LoginForm extends Component {
   constructor(props) {
     super(props)
+
     // Controlled inputs
     this.state = {
       email: '',
       password: '',
+      isLoading: false,
       error: ''
     }
+
     this.onButtonPress = this.onButtonPress.bind(this)
+    this.onLoginSuccess = this.onLoginSuccess.bind(this)
+    this.onLoginFail = this.onLoginFail.bind(this)
   }
 
   onButtonPress() {
     const { email, password } = this.state
 
-    // Clear error on next login attempt
-    this.setState({ error: '' })
+    this.setState({ isLoading: true })
 
-    // auth() returns a Promise
-    // If initial sign in fails, attempt to create account
     firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(this.onLoginSuccess)
       .catch(() => {
-        console.log('first catch', email, password)
         firebase.auth().createUserWithEmailAndPassword(email, password)
-          .catch(() => {
-            console.log('second catch', email, password)
-            this.setState({ error: 'Uh oh! Authentication failed.' })
-          })
+          .then(this.onLoginSuccess)
+          .catch(this.onLoginFail)
       })
+  }
+
+  onLoginSuccess() {
+    this.setState({
+      email: '',
+      password: '',
+      isLoading: false,
+      error: ''
+    })
+  }
+
+  onLoginFail() {
+    this.setState({
+      isLoading: false,
+      error: 'Uh oh! Authentication failed.'
+    })
+  }
+
+  renderButton() {
+    return (
+      this.state.isLoading
+        ? <Spinner />
+        : <Button
+          icon={{
+            name: 'flame',
+            type: 'octicon',
+            color: 'orange'
+          }}
+          title='Submit'
+          style={style.buttonStyle}
+          backgroundColor='grey'
+          borderRadius={20}
+          onPress={this.onButtonPress}
+        />
+    )
   }
 
   renderError() {
@@ -47,10 +83,10 @@ export default class LoginForm extends Component {
   }
 
   render() {
-    const { buttonStyle, buttonContainer, errorContainer } = style
+    const { buttonContainer, errorContainer } = style
 
     return (
-      <View style={{ flex: 1, justifyContent: 'space-around' }}>
+      <View style={{ justifyContent: 'space-around' }}>
         <View>
           <Icon
             name='account-circle'
@@ -58,11 +94,6 @@ export default class LoginForm extends Component {
             size={150}
           />
         </View>
-
-        <View style={errorContainer}>
-          {this.renderError()}
-        </View>
-
         <View>
           <Input
             label='Email'
@@ -76,20 +107,11 @@ export default class LoginForm extends Component {
             onChangeText={password => this.setState({ password })}
           />
         </View>
-
+        <View style={errorContainer}>
+          {this.renderError()}
+        </View>
         <View style={buttonContainer}>
-          <Button
-            icon={{
-              name: 'flame',
-              type: 'octicon',
-              color: 'orange'
-            }}
-            title='Submit'
-            style={buttonStyle}
-            backgroundColor='grey'
-            borderRadius={20}
-            onPress={this.onButtonPress}
-          />
+          {this.renderButton()}
         </View>
       </View>
     )
@@ -101,7 +123,8 @@ const style = {
     width: 150
   },
   buttonContainer: {
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 30
   },
   errorStyle: {
     fontSize: 16,
@@ -109,6 +132,7 @@ const style = {
     color: 'red'
   },
   errorContainer: {
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 10
   }
 }
