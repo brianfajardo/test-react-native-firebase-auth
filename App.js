@@ -4,6 +4,7 @@ import firebase from 'firebase'
 import firebaseConfig from './src/firebaseConfig'
 
 import Header from './src/components/Header'
+import LoginForm from './src/components/LoginForm'
 
 export default class App extends Component {
   componentWillMount() {
@@ -13,7 +14,8 @@ export default class App extends Component {
   render() {
     return (
       <View>
-        <Header text="Login with Firebase 🔥" />
+        <Header text="Login with Firebase" />
+        <LoginForm />
       </View>
     )
   }
