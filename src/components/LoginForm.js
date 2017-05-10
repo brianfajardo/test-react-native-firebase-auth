@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import { View } from 'react-native'
 import { FormLabel, FormInput, Button, Icon } from 'react-native-elements'
 
+import Input from './Input'
+
 export default class LoginForm extends Component {
   constructor(props) {
     super(props)
-
     // Controlled input
-    this.state = { text: '' }
+    this.state = { email: '', password: '' }
   }
 
   render() {
@@ -15,7 +16,6 @@ export default class LoginForm extends Component {
 
     return (
       <View style={{ flex: 1, justifyContent: 'space-around' }}>
-
         <View style={buttonContainer}>
           <Icon
             name='account-circle'
@@ -23,20 +23,19 @@ export default class LoginForm extends Component {
             size={150}
           />
         </View>
-
         <View>
-          <FormLabel>Email</FormLabel>
-          <FormInput
-            onChangeText={text => this.setState({ text })}
-            value={this.state.text}
+          <Input
+            label='Email'
+            value={this.state.email}
+            onChangeText={email => this.setState({ email })}
           />
-          <FormLabel>Password</FormLabel>
-          <FormInput
-            onChangeText={text => console.log(text)}
+          <Input
+            label='Password'
             secureTextEntry={true}
+            value={this.state.password}
+            onChangeText={password => this.setState({ password })}
           />
         </View>
-
         <View style={buttonContainer}>
           <Button
             icon={{
@@ -50,7 +49,6 @@ export default class LoginForm extends Component {
             borderRadius={20}
           />
         </View>
-
       </View>
     )
   }
