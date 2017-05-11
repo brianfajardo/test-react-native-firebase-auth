@@ -32,7 +32,13 @@ export default class App extends Component {
     const { centerStyle } = styles
     switch (this.state.isloggedIn) {
       case true:
-        return <Button title="Log out" style={centerStyle} />
+        return (
+          <Button
+            title="Log out"
+            style={centerStyle}
+            onPress={() => firebase.auth().signOut()}
+          />
+        )
       case false:
         return <LoginForm />
       default:
