@@ -30,6 +30,7 @@ export default class App extends Component {
 
   renderContent() {
     const { centerStyle } = styles
+
     switch (this.state.isloggedIn) {
       case true:
         return (
